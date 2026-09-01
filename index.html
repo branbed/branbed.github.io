@@ -7,7 +7,7 @@
   <title>BranBed</title>
 
   <link rel="icon" type="image/png" href="./assets/favicon.png">
-  
+
   <style>
     html,
     body {
@@ -18,53 +18,197 @@
 
     body {
       min-height: 100vh;
-
-      background-repeat: no-repeat;
-      background-position: center top;
+      font-family: Georgia, "Times New Roman", serif;
 
       transition:
-        background-image 0.8s ease,
         background-color 0.8s ease;
     }
 
-    /* 6:00 ～ 17:59 */
+    /* 昼 */
     body.day {
       background-color: white;
-      background-image: url("./assets/background-day.jpg");
-
-      /*
-        元画像: 1536 × 1024 px
-
-        画面幅が1536px以上なら元サイズ固定。
-        スマホなど1536px未満なら画面幅まで縮小。
-      */
-      background-size: min(1536px, 100vw) auto;
     }
 
-    /* 18:00 ～ 5:59 */
+    /* 夜 */
     body.night {
       background-color: black;
+    }
+
+    /*
+      背景画像とリンクをまとめて扱う領域
+      PCでは最大1536px程度、
+      スマホでは画面幅に合わせて縮小
+    */
+    .scene {
+      position: relative;
+
+      width: min(1536px, 100vw);
+      aspect-ratio: 3 / 2;
+
+      margin: 0 auto;
+
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-size: 100% 100%;
+    }
+
+    /* 昼背景 */
+    body.day .scene {
+      background-image: url("./assets/background-day.jpg");
+    }
+
+    /* 夜背景 */
+    body.night .scene {
       background-image: url("./assets/background-night.jpg");
+    }
+
+    /*
+      共通リンク設定
+    */
+    .menu-link {
+      position: absolute;
+
+      color: white;
+      text-decoration: none;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
 
       /*
-        元画像: 1535 × 1024 px
-
-        画面幅が1535px以上なら元サイズ固定。
-        スマホなど1535px未満なら画面幅まで縮小。
+        PCではやや大きめ、
+        スマホでは自動縮小
       */
-      background-size: min(1535px, 100vw) auto;
+      font-size: clamp(11px, 1.5vw, 22px);
+
+      white-space: nowrap;
+
+      /*
+        背景写真の上でも読みやすいように
+        ごく薄い影を付与
+      */
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.55);
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .menu-link:hover {
+      opacity: 0.75;
+      transform: translateY(-1px);
+    }
+
+    /*
+      ==========================
+      メインコンテンツの位置
+      ==========================
+
+      ここを調整すれば位置を変更できます。
+
+      left = 左から何%
+      top  = 上から何%
+
+      背景画像に対する割合なので、
+      画像が縮小されても位置関係は維持されます。
+    */
+
+    .observe {
+      left: 6%;
+      top: 88%;
+    }
+
+    .practice {
+      left: 16%;
+      top: 88%;
+    }
+
+    .ferment {
+      left: 27%;
+      top: 88%;
+    }
+
+    .improve {
+      left: 37%;
+      top: 88%;
+    }
+
+    /*
+      Fishery Research
+      メイン4項目より小さめ
+    */
+    .fishery {
+      left: 6%;
+      top: 94%;
+
+      color: #8fd8ff;
+
+      font-size: clamp(9px, 1vw, 15px);
+
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.6);
+    }
+
+    /*
+      スマホではタップしやすくするため
+      最低限の余白を確保
+    */
+    @media (max-width: 600px) {
+      .menu-link {
+        line-height: 1.4;
+      }
     }
   </style>
 </head>
 
 <body>
 
+  <main class="scene">
+
+    <a
+      class="menu-link observe"
+      href="./observe/"
+    >
+      Observe
+    </a>
+
+    <a
+      class="menu-link practice"
+      href="./practice/"
+    >
+      Practice
+    </a>
+
+    <a
+      class="menu-link ferment"
+      href="./ferment/"
+    >
+      Ferment
+    </a>
+
+    <a
+      class="menu-link improve"
+      href="./improve/"
+    >
+      Improve
+    </a>
+
+    <a
+      class="menu-link fishery"
+      href="https://note.com/branbed"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Fishery Research
+    </a>
+
+  </main>
+
   <script>
     function setBackground() {
       const now = new Date();
       const hour = now.getHours();
 
-      // PC・スマホなど、閲覧端末の現地時間を使用
       const isDaytime = hour >= 6 && hour < 18;
 
       document.body.classList.toggle("day", isDaytime);
@@ -75,7 +219,7 @@
     setBackground();
 
     // 1分ごとに再判定
-    // ページを開いたまま6:00 / 18:00を迎えても自動切替
+    // 開きっぱなしでも6:00 / 18:00に自動切替
     setInterval(setBackground, 60 * 1000);
   </script>
 
