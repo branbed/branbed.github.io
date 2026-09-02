@@ -18,27 +18,42 @@
 
     body {
       min-height: 100vh;
-      font-family: Georgia, "Times New Roman", serif;
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
 
       transition:
         background-color 0.8s ease;
     }
 
-    /* 昼 */
+    /* =========================
+       Day / Night
+       ========================= */
+
     body.day {
       background-color: white;
     }
 
-    /* 夜 */
     body.night {
       background-color: black;
     }
 
-    /*
-      背景画像とリンクをまとめて扱う領域
-      PCでは最大1536px程度、
-      スマホでは画面幅に合わせて縮小
+    /* =========================
+       Scene
+       =========================
+
+       背景画像とリンクを
+       同じ座標系の中に配置します。
+
+       PC:
+       元画像サイズ付近まで固定
+
+       スマホ:
+       画面幅に合わせて縮小
     */
+
     .scene {
       position: relative;
 
@@ -52,39 +67,44 @@
       background-size: 100% 100%;
     }
 
-    /* 昼背景 */
     body.day .scene {
-      background-image: url("./assets/background-day.jpg");
+      background-image:
+        url("./assets/background-day.jpg");
     }
 
-    /* 夜背景 */
     body.night .scene {
-      background-image: url("./assets/background-night.jpg");
+      background-image:
+        url("./assets/background-night.jpg");
     }
 
-    /*
-      共通リンク設定
-    */
-    .menu-link {
+    /* =========================
+       Main links
+       ========================= */
+
+    .main-link {
       position: absolute;
 
       color: white;
       text-decoration: none;
 
-      font-family: Georgia, "Times New Roman", serif;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
       font-weight: 400;
 
       /*
-        PCではやや大きめ、
-        スマホでは自動縮小
+        背景画像の縮小に合わせて
+        文字サイズも変化
       */
-      font-size: clamp(11px, 1.5vw, 22px);
+      font-size:
+        clamp(12px, 1.55vw, 23px);
 
       white-space: nowrap;
 
       /*
-        背景写真の上でも読みやすいように
-        ごく薄い影を付与
+        背景上でも少し読みやすくする
       */
       text-shadow:
         0 1px 2px rgba(0, 0, 0, 0.55);
@@ -94,67 +114,89 @@
         transform 0.2s ease;
     }
 
-    .menu-link:hover {
-      opacity: 0.75;
-      transform: translateY(-1px);
+    @media (hover: hover) and (pointer: fine) {
+      .main-link:hover {
+        opacity: 0.72;
+        transform: translateY(-1px);
+      }
     }
 
-    /*
-      ==========================
-      メインコンテンツの位置
-      ==========================
+    /* =========================
+       Main link positions
+       =========================
 
-      ここを調整すれば位置を変更できます。
+       位置調整はここだけ触ればOKです。
 
-      left = 左から何%
-      top  = 上から何%
+       left:
+       背景画像の左から何%
 
-      背景画像に対する割合なので、
-      画像が縮小されても位置関係は維持されます。
+       top:
+       背景画像の上から何%
     */
 
     .observe {
-      left: 6%;
-      top: 88%;
+      left: 7%;
+      top: 80%;
     }
 
-    .practice {
-      left: 16%;
-      top: 88%;
+    .explore {
+      left: 7%;
+      top: 86%;
     }
 
-    .ferment {
-      left: 27%;
-      top: 88%;
-    }
+    /* =========================
+       Cabin
+       =========================
 
-    .improve {
-      left: 37%;
-      top: 88%;
-    }
+       noteへの外部リンク。
 
-    /*
-      Fishery Research
-      メイン4項目より小さめ
+       メインリンクより小さく、
+       少し離して配置します。
     */
-    .fishery {
-      left: 6%;
+
+    .cabin {
+      position: absolute;
+
+      left: 7%;
       top: 94%;
 
       color: #8fd8ff;
+      text-decoration: none;
 
-      font-size: clamp(9px, 1vw, 15px);
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-weight: 400;
+
+      font-size:
+        clamp(9px, 1vw, 15px);
+
+      white-space: nowrap;
 
       text-shadow:
         0 1px 2px rgba(0, 0, 0, 0.6);
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
     }
 
-    /*
-      スマホではタップしやすくするため
-      最低限の余白を確保
-    */
+    @media (hover: hover) and (pointer: fine) {
+      .cabin:hover {
+        opacity: 0.72;
+        transform: translateY(-1px);
+      }
+    }
+
+    /* =========================
+       Mobile
+       ========================= */
+
     @media (max-width: 600px) {
-      .menu-link {
+      .main-link,
+      .cabin {
         line-height: 1.4;
       }
     }
@@ -166,40 +208,26 @@
   <main class="scene">
 
     <a
-      class="menu-link observe"
+      class="main-link observe"
       href="./observe/"
     >
       Observe
     </a>
 
     <a
-      class="menu-link practice"
-      href="./practice/"
+      class="main-link explore"
+      href="./explore/"
     >
-      Practice
+      Explore
     </a>
 
     <a
-      class="menu-link ferment"
-      href="./ferment/"
-    >
-      Ferment
-    </a>
-
-    <a
-      class="menu-link improve"
-      href="./improve/"
-    >
-      Improve
-    </a>
-
-    <a
-      class="menu-link fishery"
+      class="cabin"
       href="https://note.com/branbed"
       target="_blank"
       rel="noopener noreferrer"
     >
-      Fishery Research
+      Cabin
     </a>
 
   </main>
@@ -207,20 +235,47 @@
   <script>
     function setBackground() {
       const now = new Date();
+
+      /*
+        閲覧しているPC・スマホの
+        現地時間を使用
+      */
       const hour = now.getHours();
 
-      const isDaytime = hour >= 6 && hour < 18;
+      /*
+        06:00 - 17:59 : Day
+        18:00 - 05:59 : Night
+      */
+      const isDaytime =
+        hour >= 6 && hour < 18;
 
-      document.body.classList.toggle("day", isDaytime);
-      document.body.classList.toggle("night", !isDaytime);
+      document.body.classList.toggle(
+        "day",
+        isDaytime
+      );
+
+      document.body.classList.toggle(
+        "night",
+        !isDaytime
+      );
     }
 
-    // ページを開いた瞬間に判定
+    /*
+      ページを開いた瞬間に判定
+    */
     setBackground();
 
-    // 1分ごとに再判定
-    // 開きっぱなしでも6:00 / 18:00に自動切替
-    setInterval(setBackground, 60 * 1000);
+    /*
+      1分ごとに再判定。
+
+      ページを開いたまま
+      06:00 / 18:00 を迎えても
+      自動的に切り替わります。
+    */
+    setInterval(
+      setBackground,
+      60 * 1000
+    );
   </script>
 
 </body>
