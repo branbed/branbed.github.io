@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Observe | BranBed</title>
+
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Georgia, "Times New Roman", serif;
+
+      transition:
+        background-color 0.8s ease,
+        color 0.8s ease;
+    }
+
+    /* 06:00 - 17:59 */
+    body.day {
+      background-color: white;
+      color: black;
+    }
+
+    /* 18:00 - 05:59 */
+    body.night {
+      background-color: black;
+      color: white;
+    }
+
+    /*
+      背景画像と今後追加するコンテンツを
+      同じ座標系で扱う領域
+    */
+    .scene {
+      position: relative;
+
+      width: min(1536px, 100vw);
+      aspect-ratio: 3 / 2;
+
+      margin: 0 auto;
+
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-size: 100% 100%;
+    }
+
+    body.day .scene {
+      background-image:
+        url("../assets/background-observe-day.jpg");
+    }
+
+    body.night .scene {
+      background-image:
+        url("../assets/background-observe-night.jpg");
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="scene">
+    <!--
+      Observe内のリンクやコンテンツは
+      後からここに追加
+    -->
+  </main>
+
+  <script>
+    function setTheme() {
+      const now = new Date();
+      const hour = now.getHours();
+
+      const isDaytime =
+        hour >= 6 && hour < 18;
+
+      document.body.classList.toggle(
+        "day",
+        isDaytime
+      );
+
+      document.body.classList.toggle(
+        "night",
+        !isDaytime
+      );
+    }
+
+    // ページ表示時
+    setTheme();
+
+    // 開いたまま06:00 / 18:00を迎えても切替
+    setInterval(
+      setTheme,
+      60 * 1000
+    );
+  </script>
+
+</body>
+</html>
