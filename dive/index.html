@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dive | BranBed</title>
+
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      transition:
+        background-color 0.8s ease,
+        color 0.8s ease;
+    }
+
+    /* =========================
+       Day / Night
+       ========================= */
+
+    body.day {
+      background-color: #ffffff;
+      color: #111111;
+    }
+
+    body.night {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    /* =========================
+       Scene
+
+       1672 × 941画像を
+       常にブラウザ内へ完全収容
+       ========================= */
+
+    .scene {
+      position: relative;
+
+      width: min(
+        100vw,
+        calc(100vh * 1672 / 941)
+      );
+
+      height: min(
+        100vh,
+        calc(100vw * 941 / 1672)
+      );
+
+      flex: 0 0 auto;
+
+      overflow: hidden;
+
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100% 100%;
+
+      transition:
+        background-image 0.3s ease;
+    }
+
+    /* =========================
+       Top
+       ========================= */
+
+    body.day .scene.depth-top {
+      background-image:
+        url("../assets/background-dive-day.jpg");
+    }
+
+    body.night .scene.depth-top {
+      background-image:
+        url("../assets/background-dive-night.jpg");
+    }
+
+    /* =========================
+       Beach
+       ========================= */
+
+    body.day .scene.depth-beach {
+      background-image:
+        url("../assets/background-dive-beach-day.jpg");
+    }
+
+    body.night .scene.depth-beach {
+      background-image:
+        url("../assets/background-dive-beach-night.jpg");
+    }
+
+    /* =========================
+       Shallow
+       ========================= */
+
+    body.day .scene.depth-shallow {
+      background-image:
+        url("../assets/background-dive-shallow-day.jpg");
+    }
+
+    body.night .scene.depth-shallow {
+      background-image:
+        url("../assets/background-dive-shallow-night.jpg");
+    }
+
+    /* =========================
+       Deep
+       ========================= */
+
+    body.day .scene.depth-deep {
+      background-image:
+        url("../assets/background-dive-deep-day.jpg");
+    }
+
+    body.night .scene.depth-deep {
+      background-image:
+        url("../assets/background-dive-deep-night.jpg");
+    }
+
+    /* =========================
+       Dive trigger
+       下70%
+       ========================= */
+
+    .dive-trigger {
+      position: absolute;
+
+      left: 0;
+      top: 30%;
+
+      width: 100%;
+      height: 70%;
+
+      z-index: 3;
+
+      cursor: pointer;
+    }
+
+    .scene.panels-open .dive-trigger {
+      pointer-events: none;
+    }
+
+    /* =========================
+       Panels
+       ========================= */
+
+    .panel {
+      position: absolute;
+
+      top: 0;
+      height: 100%;
+
+      box-sizing: border-box;
+
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      opacity: 0;
+      visibility: hidden;
+
+      pointer-events: none;
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      transition:
+        opacity 0.22s ease,
+        visibility 0.22s ease,
+        transform 0.22s ease;
+
+      z-index: 15;
+    }
+
+    body.day .panel {
+      background:
+        rgba(255, 255, 255, 0.76);
+
+      color: #111111;
+
+      border-color:
+        rgba(0, 0, 0, 0.14);
+    }
+
+    body.night .panel {
+      background:
+        rgba(0, 0, 0, 0.68);
+
+      color: #ffffff;
+
+      border-color:
+        rgba(255, 255, 255, 0.20);
+    }
+
+    .panel.is-open {
+      opacity: 1;
+      visibility: visible;
+
+      pointer-events: auto;
+
+      transform: translateX(0);
+    }
+
+    /* =========================
+       Left 30%
+       ========================= */
+
+    .list-panel {
+      left: 0;
+
+      width: 30%;
+
+      padding:
+        clamp(42px, 4vw, 66px)
+        clamp(20px, 2.2vw, 34px)
+        clamp(24px, 3vw, 44px);
+
+      border-right:
+        1px solid;
+
+      transform:
+        translateX(-4%);
+    }
+
+    /* =========================
+       Right 70%
+       ========================= */
+
+    .detail-panel {
+      right: 0;
+
+      width: 70%;
+
+      padding:
+        clamp(42px, 4vw, 66px)
+        clamp(28px, 3.5vw, 54px)
+        clamp(28px, 3.5vw, 54px);
+
+      transform:
+        translateX(3%);
+    }
+
+    /* =========================
+       Close
+       ========================= */
+
+    .close-button {
+      position: absolute;
+
+      top: 14px;
+      right: 16px;
+
+      width: 36px;
+      height: 36px;
+
+      padding: 0;
+
+      border: 0;
+      border-radius: 50%;
+
+      background: transparent;
+      color: inherit;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      font-size: 25px;
+      font-weight: 300;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      opacity: 0.62;
+
+      transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+
+      .close-button:hover {
+        opacity: 1;
+
+        transform:
+          scale(1.05);
+      }
+    }
+
+    /* =========================
+       List contents
+       ========================= */
+
+    #list-content {
+      display: flex;
+      flex-direction: column;
+
+      gap: 4px;
+    }
+
+    #list-content a {
+      display: block;
+
+      padding: 9px 4px;
+
+      color: inherit;
+
+      text-decoration: none;
+
+      font-size:
+        clamp(13px, 1.2vw, 18px);
+
+      line-height: 1.45;
+
+      transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    #list-content a.active {
+      text-decoration: underline;
+      text-underline-offset: 5px;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+
+      #list-content a:hover {
+        opacity: 0.62;
+
+        transform:
+          translateX(2px);
+      }
+    }
+
+    /* =========================
+       Detail contents
+       ========================= */
+
+    #detail-content {
+      max-width: 900px;
+
+      line-height: 1.75;
+
+      font-size:
+        clamp(14px, 1.15vw, 18px);
+    }
+
+    #detail-content h1 {
+      margin:
+        0 0 24px;
+
+      font-size:
+        clamp(24px, 2.4vw, 38px);
+
+      font-weight: 400;
+    }
+
+    #detail-content h2 {
+      margin:
+        34px 0 14px;
+
+      font-size:
+        clamp(18px, 1.7vw, 26px);
+
+      font-weight: 400;
+    }
+
+    #detail-content p {
+      margin:
+        0 0 18px;
+    }
+
+    .status-message {
+      margin: 0;
+
+      font-size:
+        clamp(13px, 1.1vw, 16px);
+
+      line-height: 1.6;
+
+      opacity: 0.7;
+    }
+
+    /* =========================
+       BranBed menu
+       ========================= */
+
+    .brand-menu {
+      position: absolute;
+
+      left: 2%;
+      bottom: 2%;
+
+      z-index: 40;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .brand-popup {
+      position: absolute;
+
+      left: 0;
+      bottom: calc(100% + 8px);
+
+      min-width: 105px;
+
+      padding: 8px 0;
+
+      border-radius: 8px;
+
+      opacity: 0;
+      visibility: hidden;
+
+      transform:
+        translateY(6px);
+
+      transition:
+        opacity 0.18s ease,
+        visibility 0.18s ease,
+        transform 0.18s ease;
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      overflow: hidden;
+    }
+
+    body.day .brand-popup {
+      background:
+        rgba(255, 255, 255, 0.84);
+
+      border:
+        1px solid rgba(0, 0, 0, 0.14);
+    }
+
+    body.night .brand-popup {
+      background:
+        rgba(0, 0, 0, 0.76);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.20);
+    }
+
+    .brand-menu:hover .brand-popup,
+    .brand-menu:focus-within .brand-popup {
+      opacity: 1;
+      visibility: visible;
+
+      transform:
+        translateY(0);
+    }
+
+    .brand-popup a {
+      display: block;
+
+      padding:
+        6px 14px;
+
+      color: inherit;
+
+      text-decoration: none;
+
+      font-size:
+        clamp(12px, 1vw, 15px);
+
+      line-height: 1.3;
+
+      white-space: nowrap;
+    }
+
+    body.day .brand-popup a:hover {
+      background:
+        rgba(0, 0, 0, 0.08);
+    }
+
+    body.night .brand-popup a:hover {
+      background:
+        rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-icon {
+      display: block;
+
+      width:
+        clamp(32px, 3vw, 46px);
+
+      height:
+        clamp(32px, 3vw, 46px);
+
+      object-fit: cover;
+
+      cursor: pointer;
+
+      border-radius: 2px;
+
+      transition:
+        opacity 0.18s ease;
+    }
+
+    .brand-menu:hover .brand-icon {
+      opacity: 0.82;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    .brand-icon:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main
+    class="scene depth-top"
+    id="scene"
+  >
+
+    <!-- Bottom 70% trigger -->
+
+    <div
+      class="dive-trigger"
+      id="dive-trigger"
+      role="button"
+      tabindex="0"
+      aria-label="Open Dive contents"
+    >
+    </div>
+
+    <!-- List -->
+
+    <aside
+      class="panel list-panel"
+      id="list-panel"
+      aria-hidden="true"
+    >
+
+      <button
+        class="close-button"
+        id="close-list"
+        type="button"
+        aria-label="Close list"
+      >
+        ×
+      </button>
+
+      <div id="list-content">
+
+        <p class="status-message">
+          Loading...
+        </p>
+
+      </div>
+
+    </aside>
+
+    <!-- Detail -->
+
+    <section
+      class="panel detail-panel"
+      id="detail-panel"
+      aria-hidden="true"
+    >
+
+      <button
+        class="close-button"
+        id="close-detail"
+        type="button"
+        aria-label="Close detail"
+      >
+        ×
+      </button>
+
+      <article id="detail-content">
+      </article>
+
+    </section>
+
+    <!-- BranBed navigation -->
+
+    <div class="brand-menu">
+
+      <nav
+        class="brand-popup"
+        aria-label="BranBed navigation"
+      >
+
+        <a href="../index.html">
+          Top
+        </a>
+
+        <a href="../climb/index.html">
+          Climb
+        </a>
+
+        <a href="../stay/index.html">
+          Stay
+        </a>
+
+        <a href="./index.html">
+          Dive
+        </a>
+
+      </nav>
+
+      <img
+        class="brand-icon"
+        src="../assets/favicon.png"
+        alt="BranBed"
+        tabindex="0"
+      >
+
+    </div>
+
+  </main>
+
+  <script>
+
+    const scene =
+      document.getElementById("scene");
+
+    const diveTrigger =
+      document.getElementById("dive-trigger");
+
+    const listPanel =
+      document.getElementById("list-panel");
+
+    const detailPanel =
+      document.getElementById("detail-panel");
+
+    const listContent =
+      document.getElementById("list-content");
+
+    const detailContent =
+      document.getElementById("detail-content");
+
+    const closeListButton =
+      document.getElementById("close-list");
+
+    const closeDetailButton =
+      document.getElementById("close-detail");
+
+
+    /* =========================
+       Day / Night
+       ========================= */
+
+    function setTheme() {
+
+      const hour =
+        new Date().getHours();
+
+      const isDaytime =
+        hour >= 6 &&
+        hour < 18;
+
+      document.body.classList.toggle(
+        "day",
+        isDaytime
+      );
+
+      document.body.classList.toggle(
+        "night",
+        !isDaytime
+      );
+    }
+
+    setTheme();
+
+    setInterval(
+      setTheme,
+      60 * 1000
+    );
+
+
+    /* =========================
+       Depth
+       ========================= */
+
+    function setDepth(depth) {
+
+      scene.classList.remove(
+        "depth-top",
+        "depth-beach",
+        "depth-shallow",
+        "depth-deep"
+      );
+
+      const allowedDepths = [
+        "beach",
+        "shallow",
+        "deep"
+      ];
+
+      if (allowedDepths.includes(depth)) {
+
+        scene.classList.add(
+          `depth-${depth}`
+        );
+
+      } else {
+
+        scene.classList.add(
+          "depth-top"
+        );
+      }
+    }
+
+
+    /* =========================
+       Load list
+       ========================= */
+
+    let listLoaded = false;
+
+    async function loadList() {
+
+      if (listLoaded) {
+        return;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            "./list.html",
+            {
+              cache: "no-cache"
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            `HTTP ${response.status}`
+          );
+        }
+
+        const html =
+          await response.text();
+
+        listContent.innerHTML =
+          html;
+
+        listLoaded = true;
+
+        attachListEvents();
+
+      } catch (error) {
+
+        console.error(
+          "Could not load list.html:",
+          error
+        );
+
+        listContent.innerHTML =
+          `
+            <p class="status-message">
+              Could not load contents.
+            </p>
+          `;
+      }
+    }
+
+
+    /* =========================
+       List events
+       ========================= */
+
+    function attachListEvents() {
+
+      const links =
+        listContent.querySelectorAll(
+          "[data-content]"
+        );
+
+      links.forEach(
+        link => {
+
+          link.addEventListener(
+            "click",
+            event => {
+
+              event.preventDefault();
+
+              const contentName =
+                link.dataset.content;
+
+              const depth =
+                link.dataset.depth ||
+                "beach";
+
+              openDetail(
+                contentName,
+                depth,
+                link
+              );
+            }
+          );
+        }
+      );
+    }
+
+
+    /* =========================
+       Open list
+       ========================= */
+
+    async function openList() {
+
+      await loadList();
+
+      listPanel.classList.add(
+        "is-open"
+      );
+
+      listPanel.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      scene.classList.add(
+        "panels-open"
+      );
+    }
+
+
+    /* =========================
+       Open detail
+       ========================= */
+
+    async function openDetail(
+      contentName,
+      depth,
+      activeLink
+    ) {
+
+      if (!contentName) {
+        return;
+      }
+
+      detailContent.innerHTML =
+        `
+          <p class="status-message">
+            Loading...
+          </p>
+        `;
+
+      detailPanel.classList.add(
+        "is-open"
+      );
+
+      detailPanel.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      setDepth(depth);
+
+      listContent
+        .querySelectorAll(
+          "[data-content]"
+        )
+        .forEach(
+          link => {
+
+            link.classList.toggle(
+              "active",
+              link === activeLink
+            );
+          }
+        );
+
+      try {
+
+        const response =
+          await fetch(
+            `./contents/${contentName}.html`,
+            {
+              cache: "no-cache"
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            `HTTP ${response.status}`
+          );
+        }
+
+        const html =
+          await response.text();
+
+        detailContent.innerHTML =
+          html;
+
+        detailPanel.scrollTop = 0;
+
+      } catch (error) {
+
+        console.error(
+          `Could not load ${contentName}.html:`,
+          error
+        );
+
+        detailContent.innerHTML =
+          `
+            <p class="status-message">
+              Could not load this content.
+            </p>
+          `;
+      }
+    }
+
+
+    /* =========================
+       Close detail
+       ========================= */
+
+    function closeDetail() {
+
+      detailPanel.classList.remove(
+        "is-open"
+      );
+
+      detailPanel.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      detailContent.innerHTML = "";
+
+      listContent
+        .querySelectorAll(
+          "[data-content]"
+        )
+        .forEach(
+          link => {
+
+            link.classList.remove(
+              "active"
+            );
+          }
+        );
+
+      setDepth("top");
+    }
+
+
+    /* =========================
+       Close everything
+       ========================= */
+
+    function closeAll() {
+
+      closeDetail();
+
+      listPanel.classList.remove(
+        "is-open"
+      );
+
+      listPanel.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      scene.classList.remove(
+        "panels-open"
+      );
+
+      setDepth("top");
+    }
+
+
+    /* =========================
+       Trigger
+       ========================= */
+
+    diveTrigger.addEventListener(
+      "click",
+      openList
+    );
+
+    diveTrigger.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+
+          event.preventDefault();
+
+          openList();
+        }
+      }
+    );
+
+
+    /* =========================
+       Close buttons
+       ========================= */
+
+    closeDetailButton.addEventListener(
+      "click",
+      closeDetail
+    );
+
+    closeListButton.addEventListener(
+      "click",
+      closeAll
+    );
+
+
+    /* =========================
+       Escape
+       ========================= */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key !== "Escape") {
+          return;
+        }
+
+        if (
+          detailPanel.classList.contains(
+            "is-open"
+          )
+        ) {
+
+          closeDetail();
+
+          return;
+        }
+
+        if (
+          listPanel.classList.contains(
+            "is-open"
+          )
+        ) {
+
+          closeAll();
+        }
+      }
+    );
+
+  </script>
+
+</body>
+</html>

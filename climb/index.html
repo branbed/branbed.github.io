@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Climb | BranBed</title>
+
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      transition:
+        background-color 0.8s ease,
+        color 0.8s ease;
+    }
+
+    /* =========================
+       Day / Night
+       ========================= */
+
+    body.day {
+      background-color: #ffffff;
+      color: #111111;
+    }
+
+    body.night {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    /* =========================
+       Scene
+       1672 × 941
+
+       常にブラウザ内に全体表示
+       ========================= */
+
+    .scene {
+      position: relative;
+
+      width: min(
+        100vw,
+        calc(100vh * 1672 / 941)
+      );
+
+      height: min(
+        100vh,
+        calc(100vw * 941 / 1672)
+      );
+
+      flex: 0 0 auto;
+
+      overflow: hidden;
+
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100% 100%;
+    }
+
+    body.day .scene {
+      background-image:
+        url("../assets/background-climb-day.jpg");
+    }
+
+    body.night .scene {
+      background-image:
+        url("../assets/background-climb-night.jpg");
+    }
+
+    /* =========================
+       Dashboard common
+       ========================= */
+
+    .metric {
+      position: absolute;
+
+      width: 15%;
+
+      box-sizing: border-box;
+
+      text-align: center;
+
+      z-index: 10;
+
+      pointer-events: none;
+    }
+
+    .metric-label {
+      height: 5%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      box-sizing: border-box;
+
+      font-size:
+        clamp(11px, 1.05vw, 17px);
+
+      font-weight: 400;
+
+      letter-spacing: 0.02em;
+    }
+
+    .metric-value {
+      height: 5%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      box-sizing: border-box;
+
+      font-size:
+        clamp(14px, 1.35vw, 22px);
+
+      font-weight: 400;
+    }
+
+    body.day .metric,
+    body.day .weather {
+      color: #111111;
+
+      text-shadow:
+        0 1px 2px
+        rgba(255, 255, 255, 0.65);
+    }
+
+    body.night .metric,
+    body.night .weather {
+      color: #ffffff;
+
+      text-shadow:
+        0 1px 3px
+        rgba(0, 0, 0, 0.75);
+    }
+
+    /* =========================
+       Weather
+
+       中央30%
+       上部20%
+       ========================= */
+
+    .weather {
+      position: absolute;
+
+      left: 35%;
+      top: 0;
+
+      width: 30%;
+      height: 20%;
+
+      z-index: 10;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      pointer-events: none;
+    }
+
+    .weather-label {
+      font-size:
+        clamp(12px, 1.1vw, 18px);
+
+      margin-bottom:
+        clamp(4px, 0.4vw, 8px);
+    }
+
+    .weather-value {
+      font-size:
+        clamp(18px, 1.8vw, 30px);
+    }
+
+    /* =========================
+       Horizontal row
+
+       各15%
+       間隔2%
+
+       Altitude 0%
+       North   17%
+       Beta    34%
+       Ridge   51%
+       Haven   68%
+       Carry   85%
+       ========================= */
+
+    .altitude {
+      left: 0%;
+      top: 20%;
+    }
+
+    .north {
+      left: 17%;
+      top: 20%;
+    }
+
+    .beta {
+      left: 34%;
+      top: 20%;
+    }
+
+    .ridge {
+      left: 51%;
+      top: 20%;
+    }
+
+    .haven {
+      left: 68%;
+      top: 20%;
+    }
+
+    .carry {
+      left: 85%;
+      top: 20%;
+    }
+
+    /* =========================
+       Left vertical instruments
+
+       Altitude
+       label 20-25
+       value 25-30
+
+       gap 30-32
+
+       Slope
+       label 32-37
+       value 37-42
+
+       gap 42-44
+
+       Lead
+       label 44-49
+       value 49-54
+
+       gap 54-56
+
+       Piton
+       label 56-61
+       value1 61-66
+       value2 66-71
+
+       gap 71-73
+
+       Carabiner
+       label 73-78
+       value 78-83
+
+       gap 83-85
+
+       Belay
+       label 85-90
+       value 90-95
+       ========================= */
+
+    .slope {
+      left: 0%;
+      top: 32%;
+    }
+
+    .lead {
+      left: 0%;
+      top: 44%;
+    }
+
+    .piton {
+      position: absolute;
+
+      left: 0%;
+      top: 56%;
+
+      width: 15%;
+
+      box-sizing: border-box;
+
+      text-align: center;
+
+      z-index: 10;
+
+      pointer-events: none;
+    }
+
+    .piton .metric-label {
+      height: 5%;
+    }
+
+    .piton-value {
+      height: 5%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      box-sizing: border-box;
+
+      font-size:
+        clamp(14px, 1.35vw, 22px);
+    }
+
+    .carabiner {
+      left: 0%;
+      top: 73%;
+    }
+
+    .belay {
+      left: 0%;
+      top: 85%;
+    }
+
+    /* =========================
+       BranBed favicon menu
+       ========================= */
+
+    .brand-menu {
+      position: absolute;
+
+      left: 2%;
+      bottom: 2%;
+
+      z-index: 40;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .brand-popup {
+      position: absolute;
+
+      left: 0;
+      bottom: calc(100% + 8px);
+
+      min-width: 105px;
+
+      padding: 8px 0;
+
+      border-radius: 8px;
+
+      opacity: 0;
+      visibility: hidden;
+
+      transform:
+        translateY(6px);
+
+      transition:
+        opacity 0.18s ease,
+        visibility 0.18s ease,
+        transform 0.18s ease;
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      overflow: hidden;
+    }
+
+    body.day .brand-popup {
+      background:
+        rgba(255, 255, 255, 0.84);
+
+      border:
+        1px solid rgba(0, 0, 0, 0.14);
+    }
+
+    body.night .brand-popup {
+      background:
+        rgba(0, 0, 0, 0.76);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.20);
+    }
+
+    .brand-menu:hover .brand-popup,
+    .brand-menu:focus-within .brand-popup {
+      opacity: 1;
+      visibility: visible;
+
+      transform:
+        translateY(0);
+    }
+
+    .brand-popup a {
+      display: block;
+
+      padding:
+        6px 14px;
+
+      color: inherit;
+
+      text-decoration: none;
+
+      font-size:
+        clamp(12px, 1vw, 15px);
+
+      line-height: 1.3;
+
+      white-space: nowrap;
+    }
+
+    body.day .brand-popup a:hover {
+      background:
+        rgba(0, 0, 0, 0.08);
+    }
+
+    body.night .brand-popup a:hover {
+      background:
+        rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-icon {
+      display: block;
+
+      width:
+        clamp(32px, 3vw, 46px);
+
+      height:
+        clamp(32px, 3vw, 46px);
+
+      object-fit: cover;
+
+      cursor: pointer;
+
+      border-radius: 2px;
+
+      transition:
+        opacity 0.18s ease;
+    }
+
+    .brand-menu:hover .brand-icon {
+      opacity: 0.82;
+    }
+
+    a:focus-visible,
+    .brand-icon:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 3px;
+    }
+
+    /* =========================
+       Reduced motion
+       ========================= */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="scene">
+
+    <!-- =======================
+         Weather
+         ======================= -->
+
+    <section class="weather">
+
+      <div class="weather-label">
+        Weather
+      </div>
+
+      <div
+        class="weather-value"
+        id="weather-value"
+      >
+        Clear
+      </div>
+
+    </section>
+
+    <!-- =======================
+         Altitude
+         ======================= -->
+
+    <section class="metric altitude">
+
+      <div class="metric-label">
+        Altitude
+      </div>
+
+      <div
+        class="metric-value"
+        id="altitude-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <!-- =======================
+         Waypoints
+         ======================= -->
+
+    <section class="metric north">
+
+      <div class="metric-label">
+        North
+      </div>
+
+      <div
+        class="metric-value"
+        id="north-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <section class="metric beta">
+
+      <div class="metric-label">
+        Beta
+      </div>
+
+      <div
+        class="metric-value"
+        id="beta-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <section class="metric ridge">
+
+      <div class="metric-label">
+        Ridge
+      </div>
+
+      <div
+        class="metric-value"
+        id="ridge-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <section class="metric haven">
+
+      <div class="metric-label">
+        Haven
+      </div>
+
+      <div
+        class="metric-value"
+        id="haven-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <section class="metric carry">
+
+      <div class="metric-label">
+        Carry
+      </div>
+
+      <div
+        class="metric-value"
+        id="carry-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <!-- =======================
+         Slope
+         ======================= -->
+
+    <section class="metric slope">
+
+      <div class="metric-label">
+        Slope
+      </div>
+
+      <div
+        class="metric-value"
+        id="slope-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <!-- =======================
+         Lead
+         ======================= -->
+
+    <section class="metric lead">
+
+      <div class="metric-label">
+        Lead
+      </div>
+
+      <div
+        class="metric-value"
+        id="lead-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <!-- =======================
+         Piton
+         ======================= -->
+
+    <section class="piton">
+
+      <div class="metric-label">
+        Piton
+      </div>
+
+      <div
+        class="piton-value"
+        id="piton-1-value"
+      >
+        -
+      </div>
+
+      <div
+        class="piton-value"
+        id="piton-2-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <!-- =======================
+         Carabiner
+         ======================= -->
+
+    <section class="metric carabiner">
+
+      <div class="metric-label">
+        Carabiner
+      </div>
+
+      <div
+        class="metric-value"
+        id="carabiner-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <!-- =======================
+         Belay
+         ======================= -->
+
+    <section class="metric belay">
+
+      <div class="metric-label">
+        Belay
+      </div>
+
+      <div
+        class="metric-value"
+        id="belay-value"
+      >
+        -
+      </div>
+
+    </section>
+
+    <!-- =======================
+         BranBed navigation
+         ======================= -->
+
+    <div class="brand-menu">
+
+      <nav
+        class="brand-popup"
+        aria-label="BranBed navigation"
+      >
+
+        <a href="../index.html">
+          Top
+        </a>
+
+        <a href="./index.html">
+          Climb
+        </a>
+
+        <a href="../stay/index.html">
+          Stay
+        </a>
+
+        <a href="../dive/index.html">
+          Dive
+        </a>
+
+      </nav>
+
+      <img
+        class="brand-icon"
+        src="../assets/favicon.png"
+        alt="BranBed"
+        tabindex="0"
+      >
+
+    </div>
+
+  </main>
+
+  <script>
+
+    /* =========================
+       Day / Night
+       ========================= */
+
+    function setTheme() {
+
+      const hour =
+        new Date().getHours();
+
+      const isDaytime =
+        hour >= 6 &&
+        hour < 18;
+
+      document.body.classList.toggle(
+        "day",
+        isDaytime
+      );
+
+      document.body.classList.toggle(
+        "night",
+        !isDaytime
+      );
+    }
+
+    setTheme();
+
+    setInterval(
+      setTheme,
+      60 * 1000
+    );
+
+
+    /* =========================
+       Future API integration
+
+       後でCloudflareから取得した値を
+       ここへ流し込めます。
+
+       例:
+
+       document.getElementById(
+         "altitude-value"
+       ).textContent = "0.58231";
+
+       ========================= */
+
+  </script>
+
+</body>
+</html>
