@@ -26,15 +26,7 @@
         Georgia,
         "Times New Roman",
         serif;
-
-      transition:
-        background-color 0.8s ease,
-        color 0.8s ease;
     }
-
-    /* =========================
-       Day / Night
-       ========================= */
 
     body.day {
       background-color: #ffffff;
@@ -48,9 +40,6 @@
 
     /* =========================
        Scene
-       1672 × 941
-
-       常にブラウザ内に全体表示
        ========================= */
 
     .scene {
@@ -86,251 +75,278 @@
     }
 
     /* =========================
-       Dashboard common
+       Whole scene trigger
        ========================= */
 
-    .metric {
+    .dashboard-trigger {
       position: absolute;
 
-      width: 15%;
+      inset: 0;
 
-      box-sizing: border-box;
+      z-index: 2;
 
-      text-align: center;
+      cursor: pointer;
+    }
 
-      z-index: 10;
-
+    .scene.dashboard-open
+    .dashboard-trigger {
       pointer-events: none;
     }
 
-    .metric-label {
-      height: 5%;
+    /* =========================
+       Dashboard panels
+       ========================= */
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .dashboard-panel {
+      position: absolute;
+
+      top: 0;
+      height: 100%;
 
       box-sizing: border-box;
 
+      padding:
+        clamp(44px, 4vw, 70px)
+        clamp(20px, 2.4vw, 38px)
+        clamp(30px, 3vw, 48px);
+
+      overflow-y: auto;
+
+      opacity: 0;
+      visibility: hidden;
+
+      pointer-events: none;
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      transition:
+        opacity 0.22s ease,
+        visibility 0.22s ease,
+        transform 0.22s ease;
+
+      z-index: 20;
+    }
+
+    body.day .dashboard-panel {
+      background:
+        rgba(255, 255, 255, 0.56);
+
+      color: #111111;
+    }
+
+    body.night .dashboard-panel {
+      background:
+        rgba(0, 0, 0, 0.48);
+
+      color: #ffffff;
+    }
+
+    .scene.dashboard-open
+    .dashboard-panel {
+      opacity: 1;
+      visibility: visible;
+
+      pointer-events: auto;
+
+      transform: translateX(0);
+    }
+
+    .left-panel {
+      left: 0;
+
+      width: 30%;
+
+      transform:
+        translateX(-4%);
+
+      border-right:
+        1px solid rgba(128,128,128,0.25);
+    }
+
+    .center-panel {
+      left: 30%;
+
+      width: 30%;
+
+      transform:
+        translateY(-2%);
+
+      border-right:
+        1px solid rgba(128,128,128,0.25);
+    }
+
+    .weather-panel {
+      left: 60%;
+
+      width: 40%;
+
+      transform:
+        translateX(4%);
+    }
+
+    /* =========================
+       Close buttons
+       ========================= */
+
+    .close-button {
+      position: absolute;
+
+      top: 14px;
+      right: 16px;
+
+      width: 36px;
+      height: 36px;
+
+      padding: 0;
+
+      border: 0;
+
+      background: transparent;
+      color: inherit;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      font-size: 25px;
+      font-weight: 300;
+
+      cursor: pointer;
+
+      opacity: 0.62;
+    }
+
+    .close-button:hover {
+      opacity: 1;
+    }
+
+    /* =========================
+       Metrics
+       ========================= */
+
+    .metric {
+      margin-bottom:
+        clamp(18px, 2vh, 30px);
+    }
+
+    .metric-icon {
+      position: relative;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-width: 34px;
+
       font-size:
-        clamp(11px, 1.05vw, 17px);
+        clamp(20px, 2vw, 30px);
 
-      font-weight: 400;
+      line-height: 1;
 
-      letter-spacing: 0.02em;
+      cursor: default;
+    }
+
+    /* Tooltip */
+
+    .metric-icon::after {
+      content:
+        attr(data-tooltip);
+
+      position: absolute;
+
+      left: 50%;
+      bottom:
+        calc(100% + 8px);
+
+      transform:
+        translateX(-50%);
+
+      padding:
+        4px 8px;
+
+      border-radius: 4px;
+
+      background:
+        rgba(0, 0, 0, 0.75);
+
+      color: #ffffff;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      font-size:
+        11px;
+
+      line-height: 1.2;
+
+      white-space: nowrap;
+
+      opacity: 0;
+      visibility: hidden;
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.14s ease,
+        visibility 0.14s ease;
+
+      z-index: 60;
+    }
+
+    .metric-icon:hover::after {
+      opacity: 1;
+      visibility: visible;
     }
 
     .metric-value {
-      height: 5%;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      box-sizing: border-box;
+      margin-top: 8px;
 
       font-size:
-        clamp(14px, 1.35vw, 22px);
+        clamp(14px, 1.25vw, 20px);
 
-      font-weight: 400;
+      line-height: 1.45;
     }
 
-    body.day .metric,
-    body.day .weather {
-      color: #111111;
+    .metric-value.multi {
+      display: flex;
+      flex-direction: column;
 
-      text-shadow:
-        0 1px 2px
-        rgba(255, 255, 255, 0.65);
-    }
-
-    body.night .metric,
-    body.night .weather {
-      color: #ffffff;
-
-      text-shadow:
-        0 1px 3px
-        rgba(0, 0, 0, 0.75);
+      gap: 6px;
     }
 
     /* =========================
        Weather
-
-       中央30%
-       上部20%
        ========================= */
 
-    .weather {
-      position: absolute;
-
-      left: 35%;
-      top: 0;
-
-      width: 30%;
-      height: 20%;
-
-      z-index: 10;
-
+    .weather-content {
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
       justify-content: center;
 
-      pointer-events: none;
+      min-height: 55%;
     }
 
-    .weather-label {
+    .weather-title {
       font-size:
-        clamp(12px, 1.1vw, 18px);
+        clamp(14px, 1.3vw, 20px);
 
       margin-bottom:
-        clamp(4px, 0.4vw, 8px);
+        14px;
     }
 
     .weather-value {
       font-size:
-        clamp(18px, 1.8vw, 30px);
+        clamp(24px, 2.6vw, 42px);
     }
 
     /* =========================
-       Horizontal row
-
-       各15%
-       間隔2%
-
-       Altitude 0%
-       North   17%
-       Beta    34%
-       Ridge   51%
-       Haven   68%
-       Carry   85%
-       ========================= */
-
-    .altitude {
-      left: 0%;
-      top: 20%;
-    }
-
-    .north {
-      left: 17%;
-      top: 20%;
-    }
-
-    .beta {
-      left: 34%;
-      top: 20%;
-    }
-
-    .ridge {
-      left: 51%;
-      top: 20%;
-    }
-
-    .haven {
-      left: 68%;
-      top: 20%;
-    }
-
-    .carry {
-      left: 85%;
-      top: 20%;
-    }
-
-    /* =========================
-       Left vertical instruments
-
-       Altitude
-       label 20-25
-       value 25-30
-
-       gap 30-32
-
-       Slope
-       label 32-37
-       value 37-42
-
-       gap 42-44
-
-       Lead
-       label 44-49
-       value 49-54
-
-       gap 54-56
-
-       Piton
-       label 56-61
-       value1 61-66
-       value2 66-71
-
-       gap 71-73
-
-       Carabiner
-       label 73-78
-       value 78-83
-
-       gap 83-85
-
-       Belay
-       label 85-90
-       value 90-95
-       ========================= */
-
-    .slope {
-      left: 0%;
-      top: 32%;
-    }
-
-    .lead {
-      left: 0%;
-      top: 44%;
-    }
-
-    .piton {
-      position: absolute;
-
-      left: 0%;
-      top: 56%;
-
-      width: 15%;
-
-      box-sizing: border-box;
-
-      text-align: center;
-
-      z-index: 10;
-
-      pointer-events: none;
-    }
-
-    .piton .metric-label {
-      height: 5%;
-    }
-
-    .piton-value {
-      height: 5%;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      box-sizing: border-box;
-
-      font-size:
-        clamp(14px, 1.35vw, 22px);
-    }
-
-    .carabiner {
-      left: 0%;
-      top: 73%;
-    }
-
-    .belay {
-      left: 0%;
-      top: 85%;
-    }
-
-    /* =========================
-       BranBed favicon menu
+       BranBed favicon
        ========================= */
 
     .brand-menu {
@@ -339,18 +355,34 @@
       left: 2%;
       bottom: 2%;
 
-      z-index: 40;
+      z-index: 50;
 
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+
+      opacity: 1;
+      visibility: visible;
+
+      transition:
+        opacity 0.18s ease,
+        visibility 0.18s ease;
+    }
+
+    .scene.dashboard-open
+    .brand-menu {
+      opacity: 0;
+      visibility: hidden;
+
+      pointer-events: none;
     }
 
     .brand-popup {
       position: absolute;
 
       left: 0;
-      bottom: calc(100% + 8px);
+      bottom:
+        calc(100% + 8px);
 
       min-width: 105px;
 
@@ -371,28 +403,22 @@
 
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-
-      overflow: hidden;
     }
 
     body.day .brand-popup {
       background:
-        rgba(255, 255, 255, 0.84);
-
-      border:
-        1px solid rgba(0, 0, 0, 0.14);
+        rgba(255,255,255,0.84);
     }
 
     body.night .brand-popup {
       background:
-        rgba(0, 0, 0, 0.76);
-
-      border:
-        1px solid rgba(255, 255, 255, 0.20);
+        rgba(0,0,0,0.76);
     }
 
-    .brand-menu:hover .brand-popup,
-    .brand-menu:focus-within .brand-popup {
+    .brand-menu:hover
+    .brand-popup,
+    .brand-menu:focus-within
+    .brand-popup {
       opacity: 1;
       visibility: visible;
 
@@ -403,294 +429,374 @@
     .brand-popup a {
       display: block;
 
-      padding:
-        6px 14px;
+      padding: 6px 14px;
 
       color: inherit;
 
       text-decoration: none;
 
       font-size:
-        clamp(12px, 1vw, 15px);
-
-      line-height: 1.3;
+        clamp(12px,1vw,15px);
 
       white-space: nowrap;
-    }
-
-    body.day .brand-popup a:hover {
-      background:
-        rgba(0, 0, 0, 0.08);
-    }
-
-    body.night .brand-popup a:hover {
-      background:
-        rgba(255, 255, 255, 0.12);
     }
 
     .brand-icon {
       display: block;
 
       width:
-        clamp(32px, 3vw, 46px);
+        clamp(32px,3vw,46px);
 
       height:
-        clamp(32px, 3vw, 46px);
+        clamp(32px,3vw,46px);
 
       object-fit: cover;
 
       cursor: pointer;
-
-      border-radius: 2px;
-
-      transition:
-        opacity 0.18s ease;
-    }
-
-    .brand-menu:hover .brand-icon {
-      opacity: 0.82;
-    }
-
-    a:focus-visible,
-    .brand-icon:focus-visible {
-      outline: 2px solid currentColor;
-      outline-offset: 3px;
     }
 
     /* =========================
-       Reduced motion
+       Copyright
        ========================= */
 
-    @media (prefers-reduced-motion: reduce) {
+    .copyright {
+      position: absolute;
 
-      *,
-      *::before,
-      *::after {
-        transition: none !important;
-      }
+      right: 2%;
+      bottom: 2%;
+
+      z-index: 10;
+
+      font-size:
+        clamp(9px,0.8vw,12px);
+
+      white-space: nowrap;
+
+      pointer-events: none;
+    }
+
+    body.day .copyright {
+      color:
+        rgba(255,255,255,0.78);
+
+      text-shadow:
+        0 1px 2px rgba(0,0,0,0.70);
+    }
+
+    body.night .copyright {
+      color:
+        rgba(255,255,255,0.72);
+
+      text-shadow:
+        0 1px 2px rgba(0,0,0,0.80);
     }
   </style>
 </head>
 
 <body>
 
-  <main class="scene">
+  <main
+    class="scene"
+    id="scene"
+  >
+
+    <!-- Whole background click -->
+
+    <div
+      class="dashboard-trigger"
+      id="dashboard-trigger"
+      role="button"
+      tabindex="0"
+      aria-label="Open Climb dashboard"
+    >
+    </div>
 
     <!-- =======================
-         Weather
+         Left 30%
          ======================= -->
 
-    <section class="weather">
+    <section
+      class="dashboard-panel left-panel"
+    >
 
-      <div class="weather-label">
-        Weather
-      </div>
-
-      <div
-        class="weather-value"
-        id="weather-value"
+      <button
+        class="close-button"
+        type="button"
+        aria-label="Close dashboard"
       >
-        Clear
+        ×
+      </button>
+
+      <!-- Altitude -->
+
+      <div class="metric">
+
+        <div
+          class="metric-icon"
+          data-tooltip="Altitude"
+        >
+          △
+        </div>
+
+        <div
+          class="metric-value"
+          id="altitude-value"
+        >
+          -
+        </div>
+
       </div>
 
-    </section>
+      <!-- Slope -->
 
-    <!-- =======================
-         Altitude
-         ======================= -->
+      <div class="metric">
 
-    <section class="metric altitude">
+        <div
+          class="metric-icon"
+          data-tooltip="Slope"
+        >
+          /
+        </div>
 
-      <div class="metric-label">
-        Altitude
+        <div
+          class="metric-value"
+          id="slope-value"
+        >
+          -
+        </div>
+
       </div>
 
-      <div
-        class="metric-value"
-        id="altitude-value"
-      >
-        -
+      <!-- Lead -->
+
+      <div class="metric">
+
+        <div
+          class="metric-icon"
+          data-tooltip="Lead"
+        >
+          ○
+        </div>
+
+        <div
+          class="metric-value multi"
+        >
+          <span id="lead-1-value">-</span>
+          <span id="lead-2-value">-</span>
+          <span id="lead-3-value">-</span>
+        </div>
+
       </div>
 
-    </section>
+      <!-- Piton -->
 
-    <!-- =======================
-         Waypoints
-         ======================= -->
+      <div class="metric">
 
-    <section class="metric north">
+        <div
+          class="metric-icon"
+          data-tooltip="Piton"
+        >
+          —
+        </div>
 
-      <div class="metric-label">
-        North
+        <div
+          class="metric-value multi"
+        >
+          <span id="piton-1-value">-</span>
+          <span id="piton-2-value">-</span>
+        </div>
+
       </div>
 
-      <div
-        class="metric-value"
-        id="north-value"
-      >
-        -
+      <!-- Carabiner -->
+
+      <div class="metric">
+
+        <div
+          class="metric-icon"
+          data-tooltip="Carabiner"
+        >
+          ⊂
+        </div>
+
+        <div
+          class="metric-value"
+          id="carabiner-value"
+        >
+          -
+        </div>
+
       </div>
 
-    </section>
+      <!-- Belay -->
 
-    <section class="metric beta">
+      <div class="metric">
 
-      <div class="metric-label">
-        Beta
-      </div>
+        <div
+          class="metric-icon"
+          data-tooltip="Belay"
+        >
+          ｜
+        </div>
 
-      <div
-        class="metric-value"
-        id="beta-value"
-      >
-        -
-      </div>
+        <div
+          class="metric-value"
+          id="belay-value"
+        >
+          -
+        </div>
 
-    </section>
-
-    <section class="metric ridge">
-
-      <div class="metric-label">
-        Ridge
-      </div>
-
-      <div
-        class="metric-value"
-        id="ridge-value"
-      >
-        -
-      </div>
-
-    </section>
-
-    <section class="metric haven">
-
-      <div class="metric-label">
-        Haven
-      </div>
-
-      <div
-        class="metric-value"
-        id="haven-value"
-      >
-        -
-      </div>
-
-    </section>
-
-    <section class="metric carry">
-
-      <div class="metric-label">
-        Carry
-      </div>
-
-      <div
-        class="metric-value"
-        id="carry-value"
-      >
-        -
-      </div>
-
-    </section>
-
-    <!-- =======================
-         Slope
-         ======================= -->
-
-    <section class="metric slope">
-
-      <div class="metric-label">
-        Slope
-      </div>
-
-      <div
-        class="metric-value"
-        id="slope-value"
-      >
-        -
-      </div>
-
-    </section>
-
-    <!-- =======================
-         Lead
-         ======================= -->
-
-    <section class="metric lead">
-
-      <div class="metric-label">
-        Lead
-      </div>
-
-      <div
-        class="metric-value"
-        id="lead-value"
-      >
-        -
       </div>
 
     </section>
 
     <!-- =======================
-         Piton
+         Center 30%
          ======================= -->
 
-    <section class="piton">
+    <section
+      class="dashboard-panel center-panel"
+    >
 
-      <div class="metric-label">
-        Piton
+      <button
+        class="close-button"
+        type="button"
+        aria-label="Close dashboard"
+      >
+        ×
+      </button>
+
+      <!-- North -->
+
+      <div class="metric">
+
+        <div
+          class="metric-icon"
+          data-tooltip="North"
+        >
+          ↑
+        </div>
+
+        <div
+          class="metric-value"
+          id="north-value"
+        >
+          -
+        </div>
+
       </div>
 
-      <div
-        class="piton-value"
-        id="piton-1-value"
-      >
-        -
+      <!-- Beta -->
+
+      <div class="metric">
+
+        <div
+          class="metric-icon"
+          data-tooltip="Beta"
+        >
+          β
+        </div>
+
+        <div
+          class="metric-value"
+          id="beta-value"
+        >
+          -
+        </div>
+
       </div>
 
-      <div
-        class="piton-value"
-        id="piton-2-value"
-      >
-        -
+      <!-- Ridge -->
+
+      <div class="metric">
+
+        <div
+          class="metric-icon"
+          data-tooltip="Ridge"
+        >
+          ⌁
+        </div>
+
+        <div
+          class="metric-value"
+          id="ridge-value"
+        >
+          -
+        </div>
+
+      </div>
+
+      <!-- Haven -->
+
+      <div class="metric">
+
+        <div
+          class="metric-icon"
+          data-tooltip="Haven"
+        >
+          ◇
+        </div>
+
+        <div
+          class="metric-value"
+          id="haven-value"
+        >
+          -
+        </div>
+
+      </div>
+
+      <!-- Carry -->
+
+      <div class="metric">
+
+        <div
+          class="metric-icon"
+          data-tooltip="Carry"
+        >
+          ↗
+        </div>
+
+        <div
+          class="metric-value"
+          id="carry-value"
+        >
+          -
+        </div>
+
       </div>
 
     </section>
 
     <!-- =======================
-         Carabiner
+         Right 40%
          ======================= -->
 
-    <section class="metric carabiner">
+    <section
+      class="dashboard-panel weather-panel"
+    >
 
-      <div class="metric-label">
-        Carabiner
-      </div>
-
-      <div
-        class="metric-value"
-        id="carabiner-value"
+      <button
+        class="close-button"
+        type="button"
+        aria-label="Close dashboard"
       >
-        -
-      </div>
+        ×
+      </button>
 
-    </section>
+      <div class="weather-content">
 
-    <!-- =======================
-         Belay
-         ======================= -->
+        <div class="weather-title">
+          Weather
+        </div>
 
-    <section class="metric belay">
+        <div
+          class="weather-value"
+          id="weather-value"
+        >
+          Clear
+        </div>
 
-      <div class="metric-label">
-        Belay
-      </div>
-
-      <div
-        class="metric-value"
-        id="belay-value"
-      >
-        -
       </div>
 
     </section>
@@ -705,23 +811,10 @@
         class="brand-popup"
         aria-label="BranBed navigation"
       >
-
-        <a href="../index.html">
-          Top
-        </a>
-
-        <a href="./index.html">
-          Climb
-        </a>
-
-        <a href="../stay/index.html">
-          Stay
-        </a>
-
-        <a href="../dive/index.html">
-          Dive
-        </a>
-
+        <a href="../index.html">Top</a>
+        <a href="./index.html">Climb</a>
+        <a href="../stay/index.html">Stay</a>
+        <a href="../dive/index.html">Dive</a>
       </nav>
 
       <img
@@ -733,16 +826,32 @@
 
     </div>
 
+    <div class="copyright">
+      ⓒ BranBed 2026
+    </div>
+
   </main>
 
   <script>
+    const scene =
+      document.getElementById("scene");
+
+    const dashboardTrigger =
+      document.getElementById(
+        "dashboard-trigger"
+      );
+
+    const closeButtons =
+      document.querySelectorAll(
+        ".close-button"
+      );
+
 
     /* =========================
        Day / Night
        ========================= */
 
     function setTheme() {
-
       const hour =
         new Date().getHours();
 
@@ -770,19 +879,79 @@
 
 
     /* =========================
-       Future API integration
+       Dashboard
+       ========================= */
 
-       後でCloudflareから取得した値を
-       ここへ流し込めます。
+    function openDashboard() {
+      scene.classList.add(
+        "dashboard-open"
+      );
+    }
 
-       例:
+
+    function closeDashboard() {
+      scene.classList.remove(
+        "dashboard-open"
+      );
+    }
+
+
+    dashboardTrigger.addEventListener(
+      "click",
+      openDashboard
+    );
+
+
+    dashboardTrigger.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+          event.preventDefault();
+
+          openDashboard();
+        }
+      }
+    );
+
+
+    closeButtons.forEach(
+      button => {
+        button.addEventListener(
+          "click",
+          closeDashboard
+        );
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key === "Escape" &&
+          scene.classList.contains(
+            "dashboard-open"
+          )
+        ) {
+          closeDashboard();
+        }
+      }
+    );
+
+
+    /* =========================
+       Future Cloudflare API
+
+       Example:
 
        document.getElementById(
          "altitude-value"
-       ).textContent = "0.58231";
+       ).textContent = data.altitude;
 
        ========================= */
-
   </script>
 
 </body>

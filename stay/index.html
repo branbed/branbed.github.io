@@ -32,10 +32,6 @@
         color 0.8s ease;
     }
 
-    /* =========================
-       Day / Night
-       ========================= */
-
     body.day {
       background-color: #ffffff;
       color: #111111;
@@ -48,8 +44,6 @@
 
     /* =========================
        Scene
-       1672 × 941
-       ブラウザ内に全体を収める
        ========================= */
 
     .scene {
@@ -77,8 +71,6 @@
         background-image 0.3s ease;
     }
 
-    /* Stay top */
-
     body.day .scene.mode-top {
       background-image:
         url("../assets/background-stay-day.jpg");
@@ -88,8 +80,6 @@
       background-image:
         url("../assets/background-stay-night.jpg");
     }
-
-    /* Desk detail */
 
     body.day .scene.mode-desk {
       background-image:
@@ -102,8 +92,7 @@
     }
 
     /* =========================
-       Desk trigger
-       左30%
+       Click areas
        ========================= */
 
     .desk-trigger {
@@ -120,11 +109,6 @@
       cursor: pointer;
     }
 
-    /* =========================
-       Kitchen / Note trigger
-       右20%
-       ========================= */
-
     .kitchen-link {
       position: absolute;
 
@@ -140,11 +124,6 @@
 
       text-decoration: none;
     }
-
-    /*
-      一覧か詳細が開いたら
-      背景上のクリック領域を無効化
-    */
 
     .scene.panels-open .desk-trigger,
     .scene.panels-open .kitchen-link {
@@ -184,7 +163,7 @@
 
     body.day .panel {
       background:
-        rgba(255, 255, 255, 0.76);
+        rgba(255, 255, 255, 0.56);
 
       color: #111111;
 
@@ -194,7 +173,7 @@
 
     body.night .panel {
       background:
-        rgba(0, 0, 0, 0.68);
+        rgba(0, 0, 0, 0.48);
 
       color: #ffffff;
 
@@ -210,11 +189,6 @@
 
       transform: translateX(0);
     }
-
-    /* =========================
-       Left list panel
-       30%
-       ========================= */
 
     .list-panel {
       left: 0;
@@ -233,11 +207,6 @@
         translateX(-4%);
     }
 
-    /* =========================
-       Right detail panel
-       70%
-       ========================= */
-
     .detail-panel {
       right: 0;
 
@@ -253,7 +222,7 @@
     }
 
     /* =========================
-       Close buttons
+       Close
        ========================= */
 
     .close-button {
@@ -284,24 +253,10 @@
       cursor: pointer;
 
       opacity: 0.62;
-
-      transition:
-        opacity 0.15s ease,
-        transform 0.15s ease;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-
-      .close-button:hover {
-        opacity: 1;
-
-        transform:
-          scale(1.05);
-      }
     }
 
     /* =========================
-       List contents
+       Content
        ========================= */
 
     #list-content {
@@ -324,30 +279,12 @@
         clamp(13px, 1.2vw, 18px);
 
       line-height: 1.45;
-
-      transition:
-        opacity 0.15s ease,
-        transform 0.15s ease;
     }
 
     #list-content a.active {
       text-decoration: underline;
       text-underline-offset: 5px;
     }
-
-    @media (hover: hover) and (pointer: fine) {
-
-      #list-content a:hover {
-        opacity: 0.62;
-
-        transform:
-          translateX(2px);
-      }
-    }
-
-    /* =========================
-       Detail contents
-       ========================= */
 
     #detail-content {
       max-width: 900px;
@@ -359,8 +296,7 @@
     }
 
     #detail-content h1 {
-      margin:
-        0 0 24px;
+      margin: 0 0 24px;
 
       font-size:
         clamp(24px, 2.4vw, 38px);
@@ -369,8 +305,7 @@
     }
 
     #detail-content h2 {
-      margin:
-        34px 0 14px;
+      margin: 34px 0 14px;
 
       font-size:
         clamp(18px, 1.7vw, 26px);
@@ -379,23 +314,16 @@
     }
 
     #detail-content p {
-      margin:
-        0 0 18px;
+      margin: 0 0 18px;
     }
 
     .status-message {
       margin: 0;
-
-      font-size:
-        clamp(13px, 1.1vw, 16px);
-
-      line-height: 1.6;
-
       opacity: 0.7;
     }
 
     /* =========================
-       BranBed favicon menu
+       BranBed favicon
        ========================= */
 
     .brand-menu {
@@ -409,6 +337,19 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+
+      opacity: 1;
+      visibility: visible;
+
+      transition:
+        opacity 0.18s ease,
+        visibility 0.18s ease;
+    }
+
+    .scene.panels-open .brand-menu {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .brand-popup {
@@ -436,24 +377,16 @@
 
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-
-      overflow: hidden;
     }
 
     body.day .brand-popup {
       background:
         rgba(255, 255, 255, 0.84);
-
-      border:
-        1px solid rgba(0, 0, 0, 0.14);
     }
 
     body.night .brand-popup {
       background:
         rgba(0, 0, 0, 0.76);
-
-      border:
-        1px solid rgba(255, 255, 255, 0.20);
     }
 
     .brand-menu:hover .brand-popup,
@@ -461,15 +394,13 @@
       opacity: 1;
       visibility: visible;
 
-      transform:
-        translateY(0);
+      transform: translateY(0);
     }
 
     .brand-popup a {
       display: block;
 
-      padding:
-        6px 14px;
+      padding: 6px 14px;
 
       color: inherit;
 
@@ -478,19 +409,7 @@
       font-size:
         clamp(12px, 1vw, 15px);
 
-      line-height: 1.3;
-
       white-space: nowrap;
-    }
-
-    body.day .brand-popup a:hover {
-      background:
-        rgba(0, 0, 0, 0.08);
-    }
-
-    body.night .brand-popup a:hover {
-      background:
-        rgba(255, 255, 255, 0.12);
     }
 
     .brand-icon {
@@ -505,39 +424,42 @@
       object-fit: cover;
 
       cursor: pointer;
-
-      border-radius: 2px;
-
-      transition:
-        opacity 0.18s ease;
-    }
-
-    .brand-menu:hover .brand-icon {
-      opacity: 0.82;
     }
 
     /* =========================
-       Focus
+       Copyright
        ========================= */
 
-    button:focus-visible,
-    a:focus-visible,
-    .brand-icon:focus-visible {
-      outline: 2px solid currentColor;
-      outline-offset: 3px;
+    .copyright {
+      position: absolute;
+
+      right: 2%;
+      bottom: 2%;
+
+      z-index: 20;
+
+      font-size:
+        clamp(9px, 0.8vw, 12px);
+
+      white-space: nowrap;
+
+      pointer-events: none;
     }
 
-    /* =========================
-       Reduced motion
-       ========================= */
+    body.day .copyright {
+      color:
+        rgba(255, 255, 255, 0.78);
 
-    @media (prefers-reduced-motion: reduce) {
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.70);
+    }
 
-      *,
-      *::before,
-      *::after {
-        transition: none !important;
-      }
+    body.night .copyright {
+      color:
+        rgba(255, 255, 255, 0.72);
+
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.80);
     }
   </style>
 </head>
@@ -549,24 +471,14 @@
     id="scene"
   >
 
-    <!-- =======================
-         Desk trigger
-         左30%
-         ======================= -->
-
     <div
       class="desk-trigger"
       id="desk-trigger"
       role="button"
       tabindex="0"
-      aria-label="Open Stay logbooks"
+      aria-label="Open Stay contents"
     >
     </div>
-
-    <!-- =======================
-         Kitchen → note
-         右20%
-         ======================= -->
 
     <a
       class="kitchen-link"
@@ -576,10 +488,6 @@
       aria-label="Open BranBed on note"
     >
     </a>
-
-    <!-- =======================
-         Left list panel
-         ======================= -->
 
     <aside
       class="panel list-panel"
@@ -591,24 +499,17 @@
         class="close-button"
         id="close-list"
         type="button"
-        aria-label="Close list"
       >
         ×
       </button>
 
       <div id="list-content">
-
         <p class="status-message">
           Loading...
         </p>
-
       </div>
 
     </aside>
-
-    <!-- =======================
-         Right detail panel
-         ======================= -->
 
     <section
       class="panel detail-panel"
@@ -620,7 +521,6 @@
         class="close-button"
         id="close-detail"
         type="button"
-        aria-label="Close detail"
       >
         ×
       </button>
@@ -630,33 +530,16 @@
 
     </section>
 
-    <!-- =======================
-         BranBed navigation
-         ======================= -->
-
     <div class="brand-menu">
 
       <nav
         class="brand-popup"
         aria-label="BranBed navigation"
       >
-
-        <a href="../index.html">
-          Top
-        </a>
-
-        <a href="../climb/index.html">
-          Climb
-        </a>
-
-        <a href="./index.html">
-          Stay
-        </a>
-
-        <a href="../dive/index.html">
-          Dive
-        </a>
-
+        <a href="../index.html">Top</a>
+        <a href="../climb/index.html">Climb</a>
+        <a href="./index.html">Stay</a>
+        <a href="../dive/index.html">Dive</a>
       </nav>
 
       <img
@@ -668,61 +551,39 @@
 
     </div>
 
+    <div class="copyright">
+      ⓒ BranBed 2026
+    </div>
+
   </main>
 
   <script>
-
-    /* =========================
-       Elements
-       ========================= */
-
     const scene =
-      document.getElementById(
-        "scene"
-      );
+      document.getElementById("scene");
 
     const deskTrigger =
-      document.getElementById(
-        "desk-trigger"
-      );
+      document.getElementById("desk-trigger");
 
     const listPanel =
-      document.getElementById(
-        "list-panel"
-      );
+      document.getElementById("list-panel");
 
     const detailPanel =
-      document.getElementById(
-        "detail-panel"
-      );
+      document.getElementById("detail-panel");
 
     const listContent =
-      document.getElementById(
-        "list-content"
-      );
+      document.getElementById("list-content");
 
     const detailContent =
-      document.getElementById(
-        "detail-content"
-      );
+      document.getElementById("detail-content");
 
     const closeListButton =
-      document.getElementById(
-        "close-list"
-      );
+      document.getElementById("close-list");
 
     const closeDetailButton =
-      document.getElementById(
-        "close-detail"
-      );
+      document.getElementById("close-detail");
 
-
-    /* =========================
-       Day / Night
-       ========================= */
 
     function setTheme() {
-
       const hour =
         new Date().getHours();
 
@@ -749,25 +610,17 @@
     );
 
 
-    /* =========================
-       Background mode
-       ========================= */
-
     function setMode(mode) {
-
       scene.classList.remove(
         "mode-top",
         "mode-desk"
       );
 
       if (mode === "desk") {
-
         scene.classList.add(
           "mode-desk"
         );
-
       } else {
-
         scene.classList.add(
           "mode-top"
         );
@@ -775,21 +628,14 @@
     }
 
 
-    /* =========================
-       Load list.html
-       ========================= */
-
-    let listLoaded =
-      false;
+    let listLoaded = false;
 
     async function loadList() {
-
       if (listLoaded) {
         return;
       }
 
       try {
-
         const response =
           await fetch(
             "./list.html",
@@ -810,13 +656,11 @@
         listContent.innerHTML =
           html;
 
-        listLoaded =
-          true;
+        listLoaded = true;
 
         attachListEvents();
 
       } catch (error) {
-
         console.error(
           "Could not load list.html:",
           error
@@ -832,12 +676,7 @@
     }
 
 
-    /* =========================
-       List links
-       ========================= */
-
     function attachListEvents() {
-
       const links =
         listContent.querySelectorAll(
           "[data-content]"
@@ -845,18 +684,13 @@
 
       links.forEach(
         link => {
-
           link.addEventListener(
             "click",
             event => {
-
               event.preventDefault();
 
-              const contentName =
-                link.dataset.content;
-
               openDetail(
-                contentName,
+                link.dataset.content,
                 link
               );
             }
@@ -866,12 +700,7 @@
     }
 
 
-    /* =========================
-       Open list
-       ========================= */
-
     async function openList() {
-
       await loadList();
 
       listPanel.classList.add(
@@ -889,15 +718,10 @@
     }
 
 
-    /* =========================
-       Open detail
-       ========================= */
-
     async function openDetail(
       contentName,
       activeLink
     ) {
-
       if (!contentName) {
         return;
       }
@@ -918,9 +742,7 @@
         "false"
       );
 
-      setMode(
-        "desk"
-      );
+      setMode("desk");
 
       listContent
         .querySelectorAll(
@@ -928,7 +750,6 @@
         )
         .forEach(
           link => {
-
             link.classList.toggle(
               "active",
               link === activeLink
@@ -937,7 +758,6 @@
         );
 
       try {
-
         const response =
           await fetch(
             `./contents/${contentName}.html`,
@@ -958,16 +778,9 @@
         detailContent.innerHTML =
           html;
 
-        detailPanel.scrollTop =
-          0;
+        detailPanel.scrollTop = 0;
 
       } catch (error) {
-
-        console.error(
-          `Could not load ${contentName}.html:`,
-          error
-        );
-
         detailContent.innerHTML =
           `
             <p class="status-message">
@@ -978,12 +791,7 @@
     }
 
 
-    /* =========================
-       Close detail only
-       ========================= */
-
     function closeDetail() {
-
       detailPanel.classList.remove(
         "is-open"
       );
@@ -993,8 +801,7 @@
         "true"
       );
 
-      detailContent.innerHTML =
-        "";
+      detailContent.innerHTML = "";
 
       listContent
         .querySelectorAll(
@@ -1002,31 +809,17 @@
         )
         .forEach(
           link => {
-
             link.classList.remove(
               "active"
             );
           }
         );
 
-      /*
-        詳細だけ閉じる。
-        一覧は残す。
-        背景はStayトップへ戻る。
-      */
-
-      setMode(
-        "top"
-      );
+      setMode("top");
     }
 
 
-    /* =========================
-       Close all
-       ========================= */
-
     function closeAll() {
-
       closeDetail();
 
       listPanel.classList.remove(
@@ -1042,41 +835,14 @@
         "panels-open"
       );
 
-      setMode(
-        "top"
-      );
+      setMode("top");
     }
 
-
-    /* =========================
-       Desk trigger
-       ========================= */
 
     deskTrigger.addEventListener(
       "click",
       openList
     );
-
-    deskTrigger.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Enter" ||
-          event.key === " "
-        ) {
-
-          event.preventDefault();
-
-          openList();
-        }
-      }
-    );
-
-
-    /* =========================
-       Close buttons
-       ========================= */
 
     closeDetailButton.addEventListener(
       "click",
@@ -1088,15 +854,9 @@
       closeAll
     );
 
-
-    /* =========================
-       Escape key
-       ========================= */
-
     document.addEventListener(
       "keydown",
       event => {
-
         if (
           event.key !== "Escape"
         ) {
@@ -1108,9 +868,7 @@
             "is-open"
           )
         ) {
-
           closeDetail();
-
           return;
         }
 
@@ -1119,12 +877,10 @@
             "is-open"
           )
         ) {
-
           closeAll();
         }
       }
     );
-
   </script>
 
 </body>

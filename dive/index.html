@@ -32,10 +32,6 @@
         color 0.8s ease;
     }
 
-    /* =========================
-       Day / Night
-       ========================= */
-
     body.day {
       background-color: #ffffff;
       color: #111111;
@@ -48,9 +44,7 @@
 
     /* =========================
        Scene
-
-       1672 × 941画像を
-       常にブラウザ内へ完全収容
+       1672 × 941
        ========================= */
 
     .scene {
@@ -78,10 +72,6 @@
         background-image 0.3s ease;
     }
 
-    /* =========================
-       Top
-       ========================= */
-
     body.day .scene.depth-top {
       background-image:
         url("../assets/background-dive-day.jpg");
@@ -91,10 +81,6 @@
       background-image:
         url("../assets/background-dive-night.jpg");
     }
-
-    /* =========================
-       Beach
-       ========================= */
 
     body.day .scene.depth-beach {
       background-image:
@@ -106,10 +92,6 @@
         url("../assets/background-dive-beach-night.jpg");
     }
 
-    /* =========================
-       Shallow
-       ========================= */
-
     body.day .scene.depth-shallow {
       background-image:
         url("../assets/background-dive-shallow-day.jpg");
@@ -119,10 +101,6 @@
       background-image:
         url("../assets/background-dive-shallow-night.jpg");
     }
-
-    /* =========================
-       Deep
-       ========================= */
 
     body.day .scene.depth-deep {
       background-image:
@@ -190,7 +168,7 @@
 
     body.day .panel {
       background:
-        rgba(255, 255, 255, 0.76);
+        rgba(255, 255, 255, 0.56);
 
       color: #111111;
 
@@ -200,7 +178,7 @@
 
     body.night .panel {
       background:
-        rgba(0, 0, 0, 0.68);
+        rgba(0, 0, 0, 0.48);
 
       color: #ffffff;
 
@@ -216,10 +194,6 @@
 
       transform: translateX(0);
     }
-
-    /* =========================
-       Left 30%
-       ========================= */
 
     .list-panel {
       left: 0;
@@ -237,10 +211,6 @@
       transform:
         translateX(-4%);
     }
-
-    /* =========================
-       Right 70%
-       ========================= */
 
     .detail-panel {
       right: 0;
@@ -283,7 +253,6 @@
 
       font-size: 25px;
       font-weight: 300;
-
       line-height: 1;
 
       cursor: pointer;
@@ -296,17 +265,14 @@
     }
 
     @media (hover: hover) and (pointer: fine) {
-
       .close-button:hover {
         opacity: 1;
-
-        transform:
-          scale(1.05);
+        transform: scale(1.05);
       }
     }
 
     /* =========================
-       List contents
+       List
        ========================= */
 
     #list-content {
@@ -341,17 +307,14 @@
     }
 
     @media (hover: hover) and (pointer: fine) {
-
       #list-content a:hover {
         opacity: 0.62;
-
-        transform:
-          translateX(2px);
+        transform: translateX(2px);
       }
     }
 
     /* =========================
-       Detail contents
+       Detail
        ========================= */
 
     #detail-content {
@@ -364,8 +327,7 @@
     }
 
     #detail-content h1 {
-      margin:
-        0 0 24px;
+      margin: 0 0 24px;
 
       font-size:
         clamp(24px, 2.4vw, 38px);
@@ -374,8 +336,7 @@
     }
 
     #detail-content h2 {
-      margin:
-        34px 0 14px;
+      margin: 34px 0 14px;
 
       font-size:
         clamp(18px, 1.7vw, 26px);
@@ -384,8 +345,7 @@
     }
 
     #detail-content p {
-      margin:
-        0 0 18px;
+      margin: 0 0 18px;
     }
 
     .status-message {
@@ -400,7 +360,7 @@
     }
 
     /* =========================
-       BranBed menu
+       BranBed favicon menu
        ========================= */
 
     .brand-menu {
@@ -414,6 +374,19 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+
+      opacity: 1;
+      visibility: visible;
+
+      transition:
+        opacity 0.18s ease,
+        visibility 0.18s ease;
+    }
+
+    .scene.panels-open .brand-menu {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .brand-popup {
@@ -466,15 +439,13 @@
       opacity: 1;
       visibility: visible;
 
-      transform:
-        translateY(0);
+      transform: translateY(0);
     }
 
     .brand-popup a {
       display: block;
 
-      padding:
-        6px 14px;
+      padding: 6px 14px;
 
       color: inherit;
 
@@ -512,13 +483,42 @@
       cursor: pointer;
 
       border-radius: 2px;
-
-      transition:
-        opacity 0.18s ease;
     }
 
-    .brand-menu:hover .brand-icon {
-      opacity: 0.82;
+    /* =========================
+       Copyright
+       ========================= */
+
+    .copyright {
+      position: absolute;
+
+      right: 2%;
+      bottom: 2%;
+
+      z-index: 20;
+
+      font-size:
+        clamp(9px, 0.8vw, 12px);
+
+      white-space: nowrap;
+
+      pointer-events: none;
+    }
+
+    body.day .copyright {
+      color:
+        rgba(255, 255, 255, 0.78);
+
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.70);
+    }
+
+    body.night .copyright {
+      color:
+        rgba(255, 255, 255, 0.72);
+
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.80);
     }
 
     button:focus-visible,
@@ -529,7 +529,6 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-
       *,
       *::before,
       *::after {
@@ -546,8 +545,6 @@
     id="scene"
   >
 
-    <!-- Bottom 70% trigger -->
-
     <div
       class="dive-trigger"
       id="dive-trigger"
@@ -556,8 +553,6 @@
       aria-label="Open Dive contents"
     >
     </div>
-
-    <!-- List -->
 
     <aside
       class="panel list-panel"
@@ -575,16 +570,12 @@
       </button>
 
       <div id="list-content">
-
         <p class="status-message">
           Loading...
         </p>
-
       </div>
 
     </aside>
-
-    <!-- Detail -->
 
     <section
       class="panel detail-panel"
@@ -606,31 +597,16 @@
 
     </section>
 
-    <!-- BranBed navigation -->
-
     <div class="brand-menu">
 
       <nav
         class="brand-popup"
         aria-label="BranBed navigation"
       >
-
-        <a href="../index.html">
-          Top
-        </a>
-
-        <a href="../climb/index.html">
-          Climb
-        </a>
-
-        <a href="../stay/index.html">
-          Stay
-        </a>
-
-        <a href="./index.html">
-          Dive
-        </a>
-
+        <a href="../index.html">Top</a>
+        <a href="../climb/index.html">Climb</a>
+        <a href="../stay/index.html">Stay</a>
+        <a href="./index.html">Dive</a>
       </nav>
 
       <img
@@ -642,10 +618,13 @@
 
     </div>
 
+    <div class="copyright">
+      ⓒ BranBed 2026
+    </div>
+
   </main>
 
   <script>
-
     const scene =
       document.getElementById("scene");
 
@@ -671,12 +650,7 @@
       document.getElementById("close-detail");
 
 
-    /* =========================
-       Day / Night
-       ========================= */
-
     function setTheme() {
-
       const hour =
         new Date().getHours();
 
@@ -703,12 +677,7 @@
     );
 
 
-    /* =========================
-       Depth
-       ========================= */
-
     function setDepth(depth) {
-
       scene.classList.remove(
         "depth-top",
         "depth-beach",
@@ -723,13 +692,10 @@
       ];
 
       if (allowedDepths.includes(depth)) {
-
         scene.classList.add(
           `depth-${depth}`
         );
-
       } else {
-
         scene.classList.add(
           "depth-top"
         );
@@ -737,20 +703,14 @@
     }
 
 
-    /* =========================
-       Load list
-       ========================= */
-
     let listLoaded = false;
 
     async function loadList() {
-
       if (listLoaded) {
         return;
       }
 
       try {
-
         const response =
           await fetch(
             "./list.html",
@@ -776,7 +736,6 @@
         attachListEvents();
 
       } catch (error) {
-
         console.error(
           "Could not load list.html:",
           error
@@ -792,12 +751,7 @@
     }
 
 
-    /* =========================
-       List events
-       ========================= */
-
     function attachListEvents() {
-
       const links =
         listContent.querySelectorAll(
           "[data-content]"
@@ -805,11 +759,9 @@
 
       links.forEach(
         link => {
-
           link.addEventListener(
             "click",
             event => {
-
               event.preventDefault();
 
               const contentName =
@@ -831,12 +783,7 @@
     }
 
 
-    /* =========================
-       Open list
-       ========================= */
-
     async function openList() {
-
       await loadList();
 
       listPanel.classList.add(
@@ -854,16 +801,11 @@
     }
 
 
-    /* =========================
-       Open detail
-       ========================= */
-
     async function openDetail(
       contentName,
       depth,
       activeLink
     ) {
-
       if (!contentName) {
         return;
       }
@@ -892,7 +834,6 @@
         )
         .forEach(
           link => {
-
             link.classList.toggle(
               "active",
               link === activeLink
@@ -901,7 +842,6 @@
         );
 
       try {
-
         const response =
           await fetch(
             `./contents/${contentName}.html`,
@@ -925,7 +865,6 @@
         detailPanel.scrollTop = 0;
 
       } catch (error) {
-
         console.error(
           `Could not load ${contentName}.html:`,
           error
@@ -941,12 +880,7 @@
     }
 
 
-    /* =========================
-       Close detail
-       ========================= */
-
     function closeDetail() {
-
       detailPanel.classList.remove(
         "is-open"
       );
@@ -964,7 +898,6 @@
         )
         .forEach(
           link => {
-
             link.classList.remove(
               "active"
             );
@@ -975,12 +908,7 @@
     }
 
 
-    /* =========================
-       Close everything
-       ========================= */
-
     function closeAll() {
-
       closeDetail();
 
       listPanel.classList.remove(
@@ -1000,10 +928,6 @@
     }
 
 
-    /* =========================
-       Trigger
-       ========================= */
-
     diveTrigger.addEventListener(
       "click",
       openList
@@ -1012,23 +936,15 @@
     diveTrigger.addEventListener(
       "keydown",
       event => {
-
         if (
           event.key === "Enter" ||
           event.key === " "
         ) {
-
           event.preventDefault();
-
           openList();
         }
       }
     );
-
-
-    /* =========================
-       Close buttons
-       ========================= */
 
     closeDetailButton.addEventListener(
       "click",
@@ -1040,16 +956,12 @@
       closeAll
     );
 
-
-    /* =========================
-       Escape
-       ========================= */
-
     document.addEventListener(
       "keydown",
       event => {
-
-        if (event.key !== "Escape") {
+        if (
+          event.key !== "Escape"
+        ) {
           return;
         }
 
@@ -1058,9 +970,7 @@
             "is-open"
           )
         ) {
-
           closeDetail();
-
           return;
         }
 
@@ -1069,12 +979,10 @@
             "is-open"
           )
         ) {
-
           closeAll();
         }
       }
     );
-
   </script>
 
 </body>
